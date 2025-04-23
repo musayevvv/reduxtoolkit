@@ -1,0 +1,107 @@
+body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+.image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.4;
+    min-height: 3em;
+}
+
+.price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2a9d8f;
+}
+
+
+.inputBox {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+}
+
+
+button {
+    width: 20%;
+    height: 50px;
+    padding: 10px;
+    font-size: 20px;
+    border: none;
+    background-color: #2a9d8f;
+    color: white;
+}
+
+input {
+    width: 35%;
+    height: 50px;
+    padding: 10px;
+    font-size: 20px;
+    border: none;
+    background-color: #2a9d8f;
+    color: white;
+    outline: none; 
+}
+
+input:focus {
+    background-color: #21867a; 
+    border: none;
+    outline: none;
+}
+
+input::placeholder {
+    color: white;
+}
