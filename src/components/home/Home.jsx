@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProductThunk, postProductThunk } from "../../redux/reducer/productSlice"
+import { getProductThunk, postProductThunk, deleteProductThunk, updateProductThunk } from "../../redux/reducer/productSlice"
+import { TiDeleteOutline } from "react-icons/ti";
+import { GoPencil } from "react-icons/go";
 import styles from "./Home.module.css"
 
 const Home = () => {
     const [newProduct, setNewProduct] = useState({
-        title: '',
-        price: '',
+        name: '',
+        description: '',
+        id: '',
     })
-    
+
     const dispatch = useDispatch()
     const db = useSelector(state => state.products.products)
     const loading = useSelector(state => state.products.loading)
     const error = useSelector(state => state.products.error)
-    console.log(db);
+
 
     useEffect(() => {
         dispatch(getProductThunk())
@@ -24,11 +27,36 @@ const Home = () => {
 
 
 
-
     const handlePost = () => {
+        if (!newProduct.name.trim() || !newProduct.description.trim()) {
+            alert("Zəhmət olmasa bütün sahələri doldurun!")
+            return
+        }
+
         dispatch(postProductThunk(newProduct))
-        setNewProduct({ title: '', price: '' })
+        setNewProduct({ name: '', description: '' })
     }
+
+
+
+
+    const removeItem = (id) => {
+        dispatch(deleteProductThunk(id))
+    }
+
+
+    const updateItem = (item) => {
+        const newName = prompt("New Name:", item.name)
+        const newDesc = prompt("New Description:", item.description)
+
+        if (newName && newDesc) {
+            const updatedData = { name: newName, description: newDesc }
+            dispatch(updateProductThunk({ id: item.id, updatedData }))
+        } else {
+            alert("Heç bir sahə boş olmamalıdır!")
+        }
+    }
+
 
     return (
 
@@ -36,29 +64,35 @@ const Home = () => {
 
 
             <div className={styles.inputBox}>
-                <input type="text"
-                    placeholder='Title'
-                    value={newProduct.title}
-                    onChange={(e) => setNewProduct({ ...newProduct, title: e.target.value })}
-                />
-                <input type="text"
-                    placeholder='Price'
-                    value={newProduct.price}
-                    onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-                />
-                <button onClick={handlePost}>GONDER</button>
+                <form onSubmit={(e) => {
+                    e.preventDefault()
+                    handlePost()
+                }}>
+                    <input
+                        type="text"
+                        placeholder="name"
+                        value={newProduct.name}
+                        onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="description"
+                        value={newProduct.description}
+                        onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                    />
+                    <button type="submit">GÖNDƏR</button>
+                </form>
             </div>
 
             <div className={styles.container}>
                 {db && db.map(item => {
                     return (
                         <div className={styles.card} key={item.id}>
-                            <div className={styles.image}>
-                                <img src={item.image} alt="" />
-                            </div>
                             <div className={styles.body}>
-                                <span className={styles.title}>{item.title}</span>
-                                <span className={styles.price}>{item.price}</span>
+                                <TiDeleteOutline onClick={() => removeItem(item.id)} className={styles.bodyicon} />
+                                <GoPencil onClick={() => updateItem(item)} className={styles.pen} />
+                                <span className={styles.title}>{item.name}</span>
+                                <span className={styles.price}>{item.description}</span>
                             </div>
                         </div>
                     )
